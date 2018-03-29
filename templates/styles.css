@@ -1,0 +1,32 @@
+.jumbotron {
+    background-image: url("tempheader.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-size: 50% 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+
+}
+
+.page-style{
+    background-color: white;
+    color: black;
+    font: Impact;
+    font-size: 1em;
+}
+
+/* .table{
+    background-color: tan;
+    border: black;
+    font: Impact;
+    color: black;
+    font-size: 12px
+    
+}
+.col-md-12{
+   margin: 20px
+}
+
+.tan{
+    background-color: tan;
+} */
