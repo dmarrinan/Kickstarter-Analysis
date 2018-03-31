@@ -15,26 +15,15 @@
     font-size: 1em;
 }
 
-.navbar{
-    background-color: rgb(3, 71, 82)
+.navbar {
+    background-color: rgb(3, 71, 82);
+    font-size: medium;
+    font-style: bold; 
+    color: white;
 }
 
-.navbar-brand{
-    text-align: right;
+.navbarlink {
+    float: right;
+    padding: 15px 15px;
+    color: white;
 }
-
-/* .table{
-    background-color: tan;
-    border: black;
-    font: Impact;
-    color: black;
-    font-size: 12px
-    
-}
-.col-md-12{
-   margin: 20px
-}
-
-.tan{
-    background-color: tan;
-} */
