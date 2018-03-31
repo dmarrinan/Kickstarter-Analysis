@@ -9,14 +9,13 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://unpkg.com/simple-statistics@5.0.0/dist/simple-statistics.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!-- Leaflet CSS & JS -->
-    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script> -->
 </head>
 
 <body class = "page-style">      
 <div class="jumbotron jumbotron-fluid">
 </div> 
+
+<!-- navbar -->
 <div id="nav">
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
@@ -32,14 +31,81 @@
         </div>		
       </div>
     </div>
-  </div>
+  </div>  
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae molestias cum magnam suscipit voluptates. Nobis consequatur pariatur eligendi corrupti, totam voluptatibus perspiciatis, et qui quod dolor aliquid minima aliquam quisquam!</h3>
-            <div id="map" style="height: 450px"></div>
-        </div>    
+  <!-- month started chart -->
+  <div class="row">
+    <div class="col-md-9">
+      <H3>Month Campaign Was Started</H3>
+      <div id=""></div>     
     </div>
+    <!-- month started dropdown #1 campaign type -->
+    <div class="col-md-3">
+      <div class="">
+        <select class="" id=""></select>
+        <br>
+        <table="table table-bordered">
+          <tbody></tbody>
+        </table>
+      </div>
+    <!-- month started dropdown #2 campaign subtype -->
+      <div class"">
+          <div class="">
+              <select class="" id=""></select>
+              <br>
+              <table="table table-bordered">
+                <tbody></tbody>
+              </table>
+            </div>
+      </div>
+    </div>
+  </div>
+  <!-- lenght of campaign chart -->
+  <div class="row">
+      <div class="col-md-9">
+        <H3>Length of Campaign</H3>
+        <div id=""></div>     
+      </div>
+      <!-- lenght campaign dropdown #1 campaign type -->
+      <div class="col-md-3">
+        <div class="">
+          <select class="" id=""></select>
+          <br>
+          <table="table table-bordered">
+            <tbody></tbody>
+          </table>
+        </div>
+      <!-- lenght campaign dropdown #2 campaign subtype -->
+        <div class="">
+          <select class="" id=""></select>
+            <br>
+            <table="table table-bordered">
+              <tbody></tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+      <!-- category chart -->
+  <div class="row">
+      <div class="col-md-6">
+          <H3>Success by Category</H3>
+          <div id=""></div> 
+          <h5>Click a category on the chart for subcategory information.</h5>
+      </div>
+      <!-- subcategory chart -->
+      <div class="col-md-6">
+          <H3>Success by Subcategory</H3>
+          <div id=""></div>   
+      </div>
+    </div>
+  <!-- next button -->
+    <div class="row">
+        <div class="col-md-5"></div>
+        <div class= "col-md-2">
+            <a href="location.html"><button class="nextbutton">Next</button></a>
+        </div> 
+        <div class="col-md-5"></div>   
+      </div>
 </div>
 
 </body>
