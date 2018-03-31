@@ -1,8 +1,8 @@
 .jumbotron {
-    background-image: url("tempheader.jpg"); 
+    background-image: url("logo.jpg"); 
     background-size: cover;
     background-position: center;
-    background-size: 50% 100%;
+    background-size: 40% 100%;
     background-repeat: no-repeat;
     background-color: white;
 
@@ -10,9 +10,17 @@
 
 .page-style{
     background-color: white;
-    color: black;
+    color: rgb(3, 71, 82);
     font: Impact;
     font-size: 1em;
+}
+
+.navbar{
+    background-color: rgb(3, 71, 82)
+}
+
+.navbar-brand{
+    text-align: right;
 }
 
 /* .table{
