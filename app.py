@@ -80,7 +80,7 @@ def fetch_categories_length_campaign(parent_category):
     return jsonify(category_list)
 
 @app.route('/month_started_chart/<parent_category>/<category>/')
-def Month_started_stacked_bar_chart(parent_category,category):
+def month_started_stacked_bar_chart(parent_category,category):
     # filter by category
     queries = []
     if parent_category != 'All Parent Categories':
@@ -160,7 +160,7 @@ def length_campaign_stacked_bar_chart(parent_category,category):
 
     query_campaign_length = case(
         [
-            (campaigns.campaign_length <= 5, '<5'),
+            (campaigns.campaign_length <= 5, '<=5'),
             (((campaigns.campaign_length > 5) & (campaigns.campaign_length <= 10)), '5-10'),
             (((campaigns.campaign_length > 10) & (campaigns.campaign_length <= 15)), '10-15'),
             (((campaigns.campaign_length > 15) & (campaigns.campaign_length <= 20)), '15-20'),
@@ -184,8 +184,8 @@ def length_campaign_stacked_bar_chart(parent_category,category):
     # set up query list for each success state
     #set up return object for successful campaigns
     num_successful_object = {'num_campaigns':[],'length_bin':[]}
-    length_bins_list = ['<5','5-10','10-15','15-20','20-25','25-30','30-35','35-40','40-45','45-50','50-55','55-60','>60']
-    length_bins_object = {'<5':0,'5-10':1,'10-15':2,'15-20':3,'20-25':4,'25-30':5,'30-35':6,'35-40':7,'40-45':8,'45-50':9,'50-55':10,'55-60':11,'>60':12}
+    length_bins_list = ['<=5','5-10','10-15','15-20','20-25','25-30','30-35','35-40','40-45','45-50','50-55','55-60','>60']
+    length_bins_object = {'<=5':0,'5-10':1,'10-15':2,'15-20':3,'20-25':4,'25-30':5,'30-35':6,'35-40':7,'40-45':8,'45-50':9,'50-55':10,'55-60':11,'>60':12}
     for length_bin in length_bins_list:
         num_successful_object['num_campaigns'].append(0)
         num_successful_object['length_bin'].append(length_bin)
@@ -217,6 +217,203 @@ def length_campaign_stacked_bar_chart(parent_category,category):
     response_object = {'successful': num_successful_object, 'failed': num_failed_object,'canceled': num_canceled_object}
 
     return jsonify(response_object)   
+
+@app.route('/parent_category_chart/<month_started>/<length_campaign>/')
+def parent_category_stacked_bar_chart(month_started,length_campaign):
+    # filter by category
+    queries = []
+    if month_started != 'All Months':
+        queries.append(campaigns.month_started == month_started)
+
+    if length_campaign == '<=5':
+        queries.append(campaigns.campaign_length <= 5)
+    elif length_campaign == '5-10':
+        queries.append((campaigns.campaign_length > 5) & (campaigns.campaign_length <= 10))
+    elif length_campaign == '10-15':
+        queries.append((campaigns.campaign_length > 10) & (campaigns.campaign_length <= 15)) 
+    elif length_campaign == '15-20':
+        queries.append((campaigns.campaign_length > 15) & (campaigns.campaign_length <= 20))
+    elif length_campaign == '20-25':
+        queries.append((campaigns.campaign_length > 20) & (campaigns.campaign_length <= 25))
+    elif length_campaign == '25-30':
+        queries.append((campaigns.campaign_length > 25) & (campaigns.campaign_length <= 30))
+    elif length_campaign == '30-35':
+        queries.append((campaigns.campaign_length > 30) & (campaigns.campaign_length <= 35))
+    elif length_campaign == '35-40':
+        queries.append((campaigns.campaign_length > 35) & (campaigns.campaign_length <= 40))
+    elif length_campaign == '40-45':
+        queries.append((campaigns.campaign_length > 40) & (campaigns.campaign_length <= 45))
+    elif length_campaign == '45-50':
+        queries.append((campaigns.campaign_length > 45) & (campaigns.campaign_length <= 50))
+    elif length_campaign == '50-55':
+        queries.append((campaigns.campaign_length > 50) & (campaigns.campaign_length <= 55))
+    elif length_campaign == '55-60':
+        queries.append((campaigns.campaign_length > 55) & (campaigns.campaign_length <= 60))
+    elif length_campaign == '>60':
+        queries.append(campaigns.campaign_length >= 60)
+
+    queries_successful = queries[:]
+    queries_successful.append(campaigns.state == 'successful')
+    queries_failed = queries[:]
+    queries_failed.append(campaigns.state == 'failed')
+    queries_canceled = queries[:]
+    queries_canceled.append(campaigns.state == 'canceled')
+
+    # find number of successful, failed, and canceled campaigns
+    successful_query = session.query(campaigns.parent_category, func.count(campaigns.id)).filter(
+        *queries_successful).group_by(campaigns.parent_category).all()
+    failed_query = session.query(campaigns.parent_category, func.count(campaigns.id)).filter(
+        *queries_failed).group_by(campaigns.parent_category).all()
+    canceled_query = session.query(campaigns.parent_category, func.count(campaigns.id)).filter(
+        *queries_canceled).group_by(campaigns.parent_category).all()
+
+    parent_category_query = session.query(distinct(campaigns.parent_category)).filter(*queries).all()
+    parent_category_list = []
+    parent_category_object = {}
+    for index,row in enumerate(parent_category_query):
+        temp, = row
+        parent_category_list.append(temp)
+        parent_category_object[temp] = index
+
+    # set up query list for each success state
+    #set up return object for successful campaigns
+    num_successful_object = {'num_campaigns':[],'parent_category':[]}
+
+    for parent_category in parent_category_list:
+        num_successful_object['num_campaigns'].append(0)
+        num_successful_object['parent_category'].append(parent_category)
+    # unpack list of tuples for number of campaigns per month
+    for row in successful_query:
+        parent_category, num_campaigns = row
+        num_successful_object['num_campaigns'][parent_category_object[parent_category]] = num_campaigns
+
+    #set up return object for failed campaigns
+    num_failed_object = {'num_campaigns':[],'parent_category':[]}
+
+    for parent_category in parent_category_list:
+        num_failed_object['num_campaigns'].append(0)
+        num_failed_object['parent_category'].append(parent_category)
+    # unpack list of tuples for number of campaigns per month
+    for row in failed_query:
+        parent_category, num_campaigns = row
+        num_failed_object['num_campaigns'][parent_category_object[parent_category]] = num_campaigns
+
+    #set up return object for canceled campaigns
+    num_canceled_object = {'num_campaigns':[],'parent_category':[]}
+
+    for parent_category in parent_category_list:
+        num_canceled_object['num_campaigns'].append(0)
+        num_canceled_object['parent_category'].append(parent_category)
+    # unpack list of tuples for number of campaigns per month
+    for row in canceled_query:
+        parent_category, num_campaigns = row
+        num_canceled_object['num_campaigns'][parent_category_object[parent_category]] = num_campaigns
+
+   # build response object
+    response_object = {'successful': num_successful_object, 'failed': num_failed_object, 'canceled': num_canceled_object}
+
+    # return response object
+    return jsonify(response_object)
+
+@app.route('/category_chart/<month_started>/<length_campaign>/<parent_category>/')
+def category_stacked_bar_chart(month_started,length_campaign,parent_category):
+    # filter by category
+    queries = []
+    if month_started != 'All Months':
+        queries.append(campaigns.month_started == month_started)
+
+    if length_campaign == '<=5':
+        queries.append(campaigns.campaign_length <= 5)
+    elif length_campaign == '5-10':
+        queries.append((campaigns.campaign_length > 5) & (campaigns.campaign_length <= 10))
+    elif length_campaign == '10-15':
+        queries.append((campaigns.campaign_length > 10) & (campaigns.campaign_length <= 15)) 
+    elif length_campaign == '15-20':
+        queries.append((campaigns.campaign_length > 15) & (campaigns.campaign_length <= 20))
+    elif length_campaign == '20-25':
+        queries.append((campaigns.campaign_length > 20) & (campaigns.campaign_length <= 25))
+    elif length_campaign == '25-30':
+        queries.append((campaigns.campaign_length > 25) & (campaigns.campaign_length <= 30))
+    elif length_campaign == '30-35':
+        queries.append((campaigns.campaign_length > 30) & (campaigns.campaign_length <= 35))
+    elif length_campaign == '35-40':
+        queries.append((campaigns.campaign_length > 35) & (campaigns.campaign_length <= 40))
+    elif length_campaign == '40-45':
+        queries.append((campaigns.campaign_length > 40) & (campaigns.campaign_length <= 45))
+    elif length_campaign == '45-50':
+        queries.append((campaigns.campaign_length > 45) & (campaigns.campaign_length <= 50))
+    elif length_campaign == '50-55':
+        queries.append((campaigns.campaign_length > 50) & (campaigns.campaign_length <= 55))
+    elif length_campaign == '55-60':
+        queries.append((campaigns.campaign_length > 55) & (campaigns.campaign_length <= 60))
+    elif length_campaign == '>60':
+        queries.append(campaigns.campaign_length >= 60)
+
+    if parent_category != 'All Parent Categories':
+        queries.append(campaigns.parent_category == parent_category)
+
+    queries_successful = queries[:]
+    queries_successful.append(campaigns.state == 'successful')
+    queries_failed = queries[:]
+    queries_failed.append(campaigns.state == 'failed')
+    queries_canceled = queries[:]
+    queries_canceled.append(campaigns.state == 'canceled')
+
+    # find number of successful, failed, and canceled campaigns
+    successful_query = session.query(campaigns.category_name, func.count(campaigns.id)).filter(
+        *queries_successful).group_by(campaigns.category_name).all()
+    failed_query = session.query(campaigns.category_name, func.count(campaigns.id)).filter(
+        *queries_failed).group_by(campaigns.category_name).all()
+    canceled_query = session.query(campaigns.category_name, func.count(campaigns.id)).filter(
+        *queries_canceled).group_by(campaigns.category_name).all()
+
+    category_query = session.query(distinct(campaigns.category_name)).filter(*queries).all()
+    category_list = []
+    category_object = {}
+    for index,row in enumerate(category_query):
+        temp, = row
+        category_list.append(temp)
+        category_object[temp] = index
+
+    # set up query list for each success state
+    #set up return object for successful campaigns
+    num_successful_object = {'num_campaigns':[],'category_name':[]}
+
+    for category in category_list:
+        num_successful_object['num_campaigns'].append(0)
+        num_successful_object['category_name'].append(category)
+    # unpack list of tuples for number of campaigns per month
+    for row in successful_query:
+        category_name, num_campaigns = row
+        num_successful_object['num_campaigns'][category_object[category_name]] = num_campaigns
+
+    #set up return object for failed campaigns
+    num_failed_object = {'num_campaigns':[],'category_name':[]}
+
+    for category in category_list:
+        num_failed_object['num_campaigns'].append(0)
+        num_failed_object['category_name'].append(category)
+    # unpack list of tuples for number of campaigns per month
+    for row in failed_query:
+        category_name, num_campaigns = row
+        num_failed_object['num_campaigns'][category_object[category_name]] = num_campaigns
+
+    #set up return object for canceled campaigns
+    num_canceled_object = {'num_campaigns':[],'category_name':[]}
+
+    for category in category_list:
+        num_canceled_object['num_campaigns'].append(0)
+        num_canceled_object['category_name'].append(category)
+    # unpack list of tuples for number of campaigns per month
+    for row in canceled_query:
+        category_name, num_campaigns = row
+        num_canceled_object['num_campaigns'][category_object[category_name]] = num_campaigns
+
+   # build response object
+    response_object = {'successful': num_successful_object, 'failed': num_failed_object, 'canceled': num_canceled_object}
+
+    # return response object
+    return jsonify(response_object)
 
 # create route that renders index.html template
 @app.route("/")
