@@ -1,0 +1,51 @@
+.jumbotron {
+    background-image: url("logo.jpg"); 
+    background-size: cover;
+    background-position: center;
+    background-size: 40% 100%;
+    background-repeat: no-repeat;
+    background-color: white;
+
+}
+
+.page-style{
+    background-color: white;
+    color: rgb(3, 71, 82);
+    font: Impact;
+    font-size: 1em;
+}
+
+.navbar {
+    background-color: rgb(3, 71, 82);
+    font-size: medium;
+    font-style: bold; 
+    color: white;
+}
+
+.navbarlink {
+    float: right;
+    padding: 15px 15px;
+    color: white;
+}
+
+.nextbutton {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: medium;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #fff;
+    background-color: rgb(3, 71, 82);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #999;
+}
+
+  
+  .nextbutton:active {
+    background-color: rgb(3, 71, 82);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }

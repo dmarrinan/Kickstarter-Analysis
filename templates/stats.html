@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Project Starter</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../static/css/styles.css">
     <script src="https://unpkg.com/simple-statistics@5.0.0/dist/simple-statistics.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -21,11 +21,11 @@
       <div class="container">
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="stats.html">Basic Stats</a></li>
-            <li><a href="location.html">Location Info</a></li>
-            <li><a href="writing.html">Writing</a></li>
-            <li><a href="complete.html">Putting it Together</a></li>
+            <li><a href="/">Home</a></li>
+            <li><a href="/stats/">Basic Stats</a></li>
+            <li><a href="/location/">Location Info</a></li>
+            <li><a href="/writing/">Writing</a></li>
+            <li><a href="/complete/">Putting it Together</a></li>
           </ul>
           <a href="https://www.kickstarter.com/" target="_blank" class="navbarlink">Go to Kickstarter</a>
         </div>		
@@ -37,12 +37,12 @@
   <div class="row">
     <div class="col-md-9">
       <H3>Month Campaign Was Started</H3>
-      <div id=""></div>     
+      <div id="monthStartedStackedBar"></div>     
     </div>
     <!-- month started dropdown #1 campaign type -->
     <div class="col-md-3">
       <div class="">
-        <select class="" id=""></select>
+        <select id="parentCategorySelectMonthStarted" onchange="optionChangedMonthStartedStackedBar(this.id)"></select>
         <br>
         <table="table table-bordered">
           <tbody></tbody>
@@ -51,7 +51,7 @@
     <!-- month started dropdown #2 campaign subtype -->
       <div class"">
           <div class="">
-              <select class="" id=""></select>
+              <select id="categorySelectMonthStarted" onchange="optionChangedMonthStartedStackedBar(this.id)"></select>
               <br>
               <table="table table-bordered">
                 <tbody></tbody>
@@ -64,12 +64,12 @@
   <div class="row">
       <div class="col-md-9">
         <H3>Length of Campaign</H3>
-        <div id=""></div>     
+        <div id="lengthCampaignstackedBar"></div>     
       </div>
       <!-- lenght campaign dropdown #1 campaign type -->
       <div class="col-md-3">
         <div class="">
-          <select class="" id=""></select>
+          <select id="parentCategorySelectLengthCampaign" onchange="optionChangedLengthCampaignStackedBar(this.id)"></select>
           <br>
           <table="table table-bordered">
             <tbody></tbody>
@@ -77,7 +77,7 @@
         </div>
       <!-- lenght campaign dropdown #2 campaign subtype -->
         <div class="">
-          <select class="" id=""></select>
+          <select id="categorySelectLengthCampaign" onchange="optionChangedLengthCampaignStackedBar()"></select>
             <br>
             <table="table table-bordered">
               <tbody></tbody>
@@ -102,11 +102,13 @@
     <div class="row">
         <div class="col-md-5"></div>
         <div class= "col-md-2">
-            <a href="location.html"><button class="nextbutton">Next</button></a>
+            <a href="/location/"><button class="nextbutton">Next</button></a>
         </div> 
         <div class="col-md-5"></div>   
       </div>
 </div>
+
+<script src="{{ url_for( 'static', filename='js/stats.js' ) }} "></script>
 
 </body>
 

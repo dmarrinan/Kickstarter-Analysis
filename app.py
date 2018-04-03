@@ -691,6 +691,21 @@ def countries_map(month_started,length_campaign,parent_category,category_name):
 def home():
     return render_template("index.html")
 
+@app.route("/stats/")
+def stats():
+    return render_template("stats.html")
+
+@app.route("/location/")
+def location():
+    return render_template("location.html")
+
+@app.route("/writing/")
+def writing():
+    return render_template("writing.html")
+
+@app.route("/complete/")
+def complete():
+    return render_template("complete.html")
 
 if __name__ == "__main__":
     app.run(debug=True)
