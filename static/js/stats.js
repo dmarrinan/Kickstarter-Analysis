@@ -107,7 +107,6 @@ function optionChangedMonthStartedStackedBar(selectListId) {
             }
 
             var $radioBtnMonthStarted = document.getElementById("monthStartedRadioPercentCampaigns")
-            var monthStartedScalingFactor
             if ($radioBtnMonthStarted.checked){
                 ySuccess = []
                 yFailed = []

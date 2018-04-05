@@ -2,11 +2,14 @@
 $submitBtn = document.getElementById("submitBtn")
 $submitBtn.addEventListener("click", submitUserInput);
 
+$resetBtn = document.getElementById("resetBtn")
+$resetBtn.addEventListener("click", resetUserInput);
+
 //populate select element with possible parent category values
 parentCategoriesUrl = "/fetch_parent_categories";
 Plotly.d3.json(parentCategoriesUrl, function (error, response) {
     if (error) console.log(error);
-    parentCategoryList = ['All Categories'];
+    parentCategoryList = [];
     for (var i = 0; i < response.length; i++) {
         parentCategoryList.push(response[i]);
     }
@@ -20,10 +23,10 @@ Plotly.d3.json(parentCategoriesUrl, function (error, response) {
     }
 
     //populate select element with possible category values
-    categoriesCompleteUrl = `/fetch_categories_month_started/All Categories/`;
+    categoriesCompleteUrl = `/fetch_categories_month_started/${$parentCategorySelectListComplete.value}/`;
     Plotly.d3.json(categoriesCompleteUrl, function (error, response) {
         if (error) console.log(error);
-        categoryList = ['All Subcategories'];
+        categoryList = [];
         for (var i = 0; i < response.length; i++) {
             categoryList.push(response[i]);
         }
@@ -36,6 +39,16 @@ Plotly.d3.json(parentCategoriesUrl, function (error, response) {
             $categorySelectListComplete.appendChild($optionComplete);
         }
     });
+
+    monthList = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    $monthSelectListComplete = document.getElementById("monthSelectComplete");
+    for (var i = 0; i < monthList.length; i++) {
+        var $optionComplete = document.createElement("option");
+        $optionComplete.value = monthList[i];
+        $optionComplete.text = monthList[i];
+        $monthSelectListComplete.appendChild($optionComplete);
+    }
 });
 
 function optionChangedParentCategoryComplete(selectListId){
@@ -45,7 +58,7 @@ function optionChangedParentCategoryComplete(selectListId){
     
     Plotly.d3.json(categoriesCompleteUrl, function (error, response) {
         if (error) console.log(error);
-        categoryList = ['All Categories'];
+        categoryList = [];
 
         for (var i = 0; i < response.length; i++) {
             categoryList.push(response[i]);
@@ -64,15 +77,30 @@ function optionChangedParentCategoryComplete(selectListId){
 }
 
 function removeOptions(selectbox) {
-    var i;
-    for (i = selectbox.options.length - 1; i >= 0; i--) {
+    for (var i = selectbox.options.length - 1; i >= 0; i--) {
         selectbox.remove(i);
     }
 }
 
 function submitUserInput(){
     event.preventDefault();
-    $titleFormComplete = document.getElementById("subject")
-    titleText = $titleFormComplete.value
-    console.log(titleText)
+
+    var titleText = document.getElementById("subject").value
+    var blurbText = document.getElementById("message").value
+    var goalText = document.getElementById("inputGoal").value
+    var campaignLengthText = document.getElementById("inputLengthCampaign").value
+    var startMonth = document.getElementById("monthSelectComplete").value
+    var parentCategory = document.getElementById("parentCategorySelectComplete").value
+    var category = document.getElementById("categorySelectComplete").value
+
+    blurbText = blurbText.replace("/","|")
+    titleText = titleText.replace("/","|")
+    goalText = goalText.replace("/","|")
+
+    var predictUrl = `/predict/${titleText}/${blurbText}/${goalText}/${campaignLengthText}/${startMonth}/${parentCategory}/${category}/`;
+    Plotly.d3.json(predictUrl, function(error,response){
+        console.log(response)
+    });
 }
+
+function resetUserInput(){}

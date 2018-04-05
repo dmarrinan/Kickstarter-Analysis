@@ -11,6 +11,21 @@ from flask import(
     jsonify
 )
 
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+analyzer = SentimentIntensityAnalyzer()
+
+from sklearn import tree
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.externals import joblib
+
+#load models
+model_name = 'random_forest'
+model_name_backers = 'random_forest_backers'
+
+loaded_model = joblib.load(f'models/{model_name}.pkl')
+loaded_model_backers = joblib.load(f'models/{model_name_backers}.pkl')
+
+
 # Database Setup
 engine = create_engine("sqlite:///db/kickstarter_campaigns.sqlite")
 
@@ -685,6 +700,70 @@ def countries_map(month_started,length_campaign,parent_category,category_name):
     response_object = {'successful': num_successful_object, 'failed': num_failed_object, 'canceled': num_canceled_object}
 
     # return response object
+    return jsonify(response_object)
+
+@app.route("/predict/<titleText>/<blurbText>/<goalText>/<campaignLengthText>/<startMonth>/<parentCategory>/<category>/")
+def predict(titleText,blurbText,goalText,campaignLengthText,startMonth,parentCategory,category):
+    print(titleText)
+    print(blurbText)
+    print(goalText)
+    print(campaignLengthText)
+    print(startMonth)
+    print(parentCategory)
+    print(category)
+
+    category_name_dic = {'Television': 0, 'Weaving': 1, 'Festivals': 2, 'Music': 3, 'Romance': 4, 'Punk': 5, 'Makerspaces': 6, "Children's Books": 7, 'Family': 8, 'Couture': 9, 'Anthologies': 10, 'Design': 11, 'Workshops': 12, 'People': 13, 'Music Videos': 14, 'Digital Art': 15, 'Country & Folk': 16, 'Printing': 17, 'Action': 18, 'Farms': 19, 'Experimental': 20, 'Performances': 21, 'Photobooks': 22, 'Letterpress': 23, 'Webcomics': 24, 'Electronic Music': 25, 'Thrillers': 26, 'Architecture': 27, 'Rock': 28, 'Immersive': 29, 'Video': 30, 'Hip-Hop': 31, 'Camera Equipment': 32, 'Drama': 33, 'Horror': 34, 'Residencies': 35, 'Fabrication Tools': 36, 'Live Games': 37, 'Stationery': 38, 'Chiptune': 39, 'DIY Electronics': 40, 'Audio': 41, 'Academic': 42, 'Periodicals': 43, 'Poetry': 44, 'Fine Art': 45, 'Installations': 46, 'Mobile Games': 47, 'Kids': 48, 'Illustration': 49, '3D Printing': 50, 'Public Art': 51, 'Mixed Media': 52, 'Video Art': 53, 'Knitting': 54, 'Documentary': 55, 'R&B': 56, 'Dance': 57, 'Embroidery': 58, 'Webseries': 59, 'Hardware': 60, 'Nonfiction': 61, 'Publishing': 62, 'Food Trucks': 63, 'Comedy': 64, 'Software': 65, 'Playing Cards': 66, 'Footwear': 67, 'Plays': 68, 'Animation': 69, 'Calendars': 70, 'Apparel': 71, 'Bacon': 72, "Farmer's Markets": 73, 'Woodworking': 74, 'Places': 75, 'Crafts': 76, 'Literary Journals': 77, 'Product Design': 78, 'Interactive Design': 79, 'Comics': 80, 'Sound': 81, 'Events': 82, 'Fiction': 83, 'Art': 84, 'Pop': 85, 'Radio & Podcasts': 86, 'Technology': 87, 'Photography': 88, 'Literary Spaces': 89, 'Photo': 90, 'Typography': 91, 'Jewelry': 92, 'Apps': 93, 'Small Batch': 94, 'Animals': 95, 'Taxidermy': 96, 'Indie Rock': 97, 'Nature': 98, 'Pottery': 99, 'Science Fiction': 100, 'Textiles': 101, 'Space Exploration': 102, 'Web': 103, 'Pet Fashion': 104, 'Civic Design': 105, 'Performance Art': 106, 'Sculpture': 107, 'Quilts': 108, 'Wearables': 109, 'Faith': 110, 'Puzzles': 111, 'Childrenswear': 112, 'Accessories': 113, 'Gadgets': 114, 'Theater': 115, 'Movie Theaters': 116, 'Comic Books': 117, 'Tabletop Games': 118, 'Musical': 119, 'Drinks': 120, 'Spaces': 121, 'Ready-to-wear': 122, 'Games': 123, 'Gaming Hardware': 124, 'Crochet': 125, 'Robots': 126, 'Glass': 127, 'Blues': 128, 'Candles': 129, 'Classical Music': 130, 'Metal': 131, 'Zines': 132, 'Narrative Film': 133, 'World Music': 134, 'Conceptual Art': 135, 'Jazz': 136, 'Vegan': 137, 'Ceramics': 138, 'Graphic Design': 139, 'Graphic Novels': 140, 'Cookbooks': 141, 'Flight': 142, 'Translations': 143, 'Journalism': 144, 'Shorts': 145, 'Restaurants': 146, 'Print': 147, 'Young Adult': 148, 'DIY': 149, 'Video Games': 150, 'Film & Video': 151, 'Food': 152, 'Art Books': 153, 'Painting': 154, 'Fantasy': 155, 'Latin': 156, 'Community Gardens': 157}
+    parent_category_dic = {'Publishing': 0, 'Music': 1, 'none': 2, 'Crafts': 3, 'Design': 4, 'Dance': 5, 'Technology': 6, 'Games': 7, 'Photography': 8, 'Comics': 9, 'Film & Video': 10, 'Food': 11, 'Journalism': 12, 'Art': 13, 'Theater': 14}
+    month_dic = {'September': 0, 'February': 1, 'June': 2, 'November': 3, 'May': 4, 'July': 5, 'March': 6, 'August': 7, 'April': 8, 'January': 9, 'October': 10, 'December': 11}
+
+    category_name = category_name_dic[category]
+    parent_category = parent_category_dic[parentCategory]
+    month = month_dic[startMonth]
+    goal = float(goalText)
+    campaign_length = float(campaignLengthText)
+    
+    try:
+        title_length = len(titleText)
+        sentiment = analyzer.polarity_scores(titleText)
+    except TypeError:
+        title_length = 0
+        sentiment = {'compound':0,'pos':0,'neg':0,'neu':1}
+    title_compound = sentiment['compound']
+    title_positive = sentiment['pos']
+    title_negative = sentiment['neg']
+    title_neutral = sentiment['neu']
+
+    try:
+        blurb_length = len(blurbText)
+        sentiment = analyzer.polarity_scores(titleText)
+    except TypeError:
+        blurb_length = 0
+        sentiment = {'compound':0,'pos':0,'neg':0,'neu':1}
+    blurb_compound = sentiment['compound']
+    blurb_positive = sentiment['pos']
+    blurb_negative = sentiment['neg']
+    blurb_neutral = sentiment['neu']
+
+    #do we need to add drop downs for these?
+    country = 0
+    currency = 0
+
+    #what datatype does X need to be?
+    X = [[campaign_length,blurb_length,blurb_compound,blurb_positive,blurb_negative,blurb_neutral, title_length, title_compound, title_positive,title_negative,title_neutral,goal,country,currency,category_name,parent_category,month]]
+
+    #models are loaded at very beginning of app
+    prediction = loaded_model.predict(X)
+    prediction_list = prediction.tolist()
+
+    #what values do we want to test our model with?
+    backers_list = []
+
+    backers_predictions = []
+    for backer in backers_list:
+        backers_predictions.append(loaded_model_backers.predict([X,backer]))
+
+    #need to figure out how to deal with output so that we can jsonify it!
+    response_object = {'prediction': prediction_list, 'backers_list': backers_list, 'backers_predictions': backers_predictions}
     return jsonify(response_object)
 
 # create route that renders index.html template
