@@ -481,6 +481,7 @@ def states_map(month_started,length_campaign,parent_category,category_name):
     # filter by category
     queries = [] 
     queries.append(campaigns.state_or_province.in_(states_object))
+
     if month_started != 'All Months':
         queries.append(campaigns.month_started == month_started)
 

@@ -61,10 +61,10 @@
       <div class="col-md-12">
         <form class="labelfont">
           <div class="radio">
-            <label><input type="radio" name="optradio" value="number">Number of Campaigns</label>
+            <label><input type="radio" name="optradio" value="number" checked="checked" onchange=optionChangedMonthStartedStackedBar(this.id) id="monthStartedRadioNumberCampaigns">Number of Campaigns</label>
          </div>
          <div class="radio">
-            <label><input type="radio" name="optradio" value="percent">Percent of Campaigns</label>
+            <label><input type="radio" name="optradio" value="percent" onchange=optionChangedMonthStartedStackedBar(this.id) id="monthStartedRadioPercentCampaigns">Percent of Campaigns</label>
          </div>
         </form>
       </div>
@@ -98,10 +98,10 @@
       <div class="col-md-12">
           <form>
             <div class="radio">
-              <label><input type="radio" name="optradio" value="number">Number of Campaigns</label>
+              <label><input type="radio" name="optradio" value="number" checked="checked" onchange="optionChangedLengthCampaignStackedBar(this.id)" id="lengthCampaignRadioNumberCampaigns">Number of Campaigns</label>
            </div>
            <div class="radio">
-              <label><input type="radio" name="optradio" value="percent">Percent of Campaigns</label>
+              <label><input type="radio" name="optradio" value="percent" onchange="optionChangedLengthCampaignStackedBar(this.id)" id="lengthCampaignRadioPercentCampaigns">Percent of Campaigns</label>
            </div>
           </form>
         </div>  
@@ -110,13 +110,13 @@
   <div class="row">
       <div class="col-md-6">
           <H3>Success by Category</H3>
-          <div id=""></div> 
+          <div id="parentCategoryStackedBar"></div> 
           <h5>Click a category on the chart for subcategory information.</h5>
       </div>
       <!-- subcategory chart -->
       <div class="col-md-6">
           <H3>Success by Subcategory</H3>
-          <div id=""></div>   
+          <div id="categoryStackedBar"></div>   
       </div>
     </div>
   <!-- next button -->

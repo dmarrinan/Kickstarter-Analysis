@@ -1,140 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Project Starter</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="../static/css/styles.css">
-    <script src="https://unpkg.com/simple-statistics@5.0.0/dist/simple-statistics.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <!-- Leaflet CSS & JS -->
-    <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Project Starter</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../static/css/styles.css">
+  <script src="https://unpkg.com/simple-statistics@5.0.0/dist/simple-statistics.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <!-- Leaflet CSS & JS -->
+  <!-- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script> -->
 </head>
 
-<body class = "page-style">      
-<div class="jumbotron jumbotron-fluid">
-</div> 
-<div id="nav">
+<body class="page-style">
+  <div class="jumbotron jumbotron-fluid">
+  </div>
+  <div id="nav">
     <div class="navbar navbar-inverse navbar-static-top">
       <div class="container">
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/stats/">Basic Stats</a></li>
-            <li><a href="/location/">Location Info</a></li>
-            <li><a href="/writing/">Writing</a></li>
-            <li><a href="/complete/">Putting it Together</a></li>
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/stats/">Basic Stats</a>
+            </li>
+            <li>
+              <a href="/location/">Location Info</a>
+            </li>
+            <li>
+              <a href="/writing/">Writing</a>
+            </li>
+            <li>
+              <a href="/complete/">Putting it Together</a>
+            </li>
           </ul>
           <a href="https://www.kickstarter.com/" target="_blank" class="navbarlink">Go to Kickstarter</a>
-        </div>		
+        </div>
       </div>
     </div>
   </div>
-<div class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <h3>instructions with form below</h3>
-    </div>    
-  </div>
-  <form>
-    <div class="form-row">
- <!-- choosing XXX dropdown   -->    
-      <div class="form-group col-md-4">
-        <label for="inputcategory">Category of Your Campaign</label>
-        <select id="" class="form-control"></select>
-        <br> 
-        <table="table table-bordered">
-          <tbody></tbody>
-        </table>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>instructions with form below</h3>
       </div>
-     <!-- choosing Sub-Category dropdown   -->       
-      <div class="form-group col-md-4">
-        <label for="inputsubcategory">Sub-Category of Your Campaign</label>
-        <select id="" class="form-control"></select>
-        <br> 
-        <table="table table-bordered">
-          <tbody></tbody>
-        </table>
-      </div>
-     <!-- choosing Budget dropdown   -->    
-     <div class="form-group col-md-4">
-        <label for="inputbudget">Budget of Your Campaign</label>
-        <select id="" class="form-control"></select>
-        <br> 
-        <table="table table-bordered">
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>  
-  <div class="form-row">
-      <!-- choosing XXX dropdown   -->    
-    <div class="form-group col-md-4">
-        <label for="inputanother">Another of Your Campaign</label>
-        <select id="" class="form-control"></select>
-        <br> 
-        <table="table table-bordered">
-          <tbody></tbody>
-        </table>
     </div>
-      <!-- choosing Sub-Category dropdown   -->       
-      <div class="form-group col-md-4">
-        <label for="inputsomething">Something of Your Campaign</label>
-        <select id="" class="form-control"></select>
-        <br> 
-        <table="table table-bordered">
-          <tbody></tbody>
-        </table>
-      </div>
-        <!-- choosing Budget dropdown   -->    
+    <form>
+      <div class="form-row">
+        <!-- choosing XXX dropdown   -->
         <div class="form-group col-md-4">
-          <label for="inputstuff">Stuff of Your Campaign</label>
-          <select id="" class="form-control"></select>
-          <br> 
+          <label for="inputcategory">Category of Your Campaign</label>
+          <select id="parentCategorySelectComplete" class="form-control" onchange=optionChangedParentCategoryComplete()></select>
+          <br>
           <table="table table-bordered">
             <tbody></tbody>
-          </table>
+            </table>
         </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-md-12">
-    <!-- Title field -->
-        <label class="control-label " for="subject">Title</label>
-        <input class="form-control" id="subject" name="subject" type="text"/>
-    </div>
-  </div> 
-  <div class="form-row">
-    <div class="form-group col-md-12">
-    <!-- Blurb field -->
-      <label class="control-label " for="message">Blurb</label>
-      <textarea class="form-control" cols="40" id="message" name="message" rows="10"></textarea>
-    </div>
-  </div>  
-  <div class="form-row">
-    <div class="form-group col-md-6">
-      <button type="submit" class="btn nextbutton">Submit</button>  
-    </div>
-    <div class="form-group col-md-6">
-        <button type="reset" class="btn nextbutton">Reset</button>  
-      </div>
-  </div> 
-  <div class="row">
-    <div class="col-md-6">
-      <!-- success half donut graph -->
-      <h3>Likely Success Rate</h3>
-      <div id=""></div>
-    </div>
-    <div class ="col-md-6">
-      <!-- Success backers bar chart -->
-      <h3>Success Likelihood Per Number Backers</h3>
-      <div id=""></div>
-    </div>
-  </div> 
-</div>
+        <!-- choosing Sub-Category dropdown   -->
+        <div class="form-group col-md-4">
+          <label for="inputsubcategory">Sub-Category of Your Campaign</label>
+          <select id="categorySelectComplete" class="form-control"></select>
+          <br>
+          <table="table table-bordered">
+            <tbody></tbody>
+            </table>
+        </div>
+        <!-- choosing Month Started dropdown   -->
+        <div class="form-group col-md-4">
+          <label for="MonthStartedSelectComplete">Month You are Starting Your Campaign</label>
+          <select id="MonthStartedSelectComplete" class="form-control"></select>
+          <br>
+          <table="table table-bordered">
+            <tbody></tbody>
+            </table>
+        </div>
+        <div class="form-row">
+          <!-- choosing Goal dropdown   -->
+          <div class="form-group col-md-4">
+            <label for="inputGoal">Goal of Your Campaign (USD)</label>
+            <input class="form-control" id="inputGoal" name="inputGoal" type="text" />
+            <br>
+            <table="table table-bordered">
+              <tbody></tbody>
+              </table>
+          </div>
+        </div>
+        <!-- choosing Length of Campaign dropdown   -->
+        <div class="form-group col-md-4">
+          <label for="inputLengthCampaign">Length of Campaign (Days)</label>
+          <input class="form-control" id="inputLengthCampaign" name="inputLengthCampaign" type="text" />
+          <br>
+          <table="table table-bordered">
+            <tbody></tbody>
+            </table>
+        </div>
 
-</form>
+        <!-- choosing Budget dropdown   -->
+        <!-- <div class="form-group col-md-4">
+          <label for="inputstuff">Stuff of Your Campaign</label>
+          <select id="" class="form-control"></select>
+          <br>
+          <table="table table-bordered">
+            <tbody></tbody>
+            </table>
+        </div> -->
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <!-- Title field -->
+          <label class="control-label " for="subject">Title</label>
+          <input class="form-control" id="subject" name="subject" type="text" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-12">
+          <!-- Blurb field -->
+          <label class="control-label " for="message">Blurb</label>
+          <textarea class="form-control" cols="40" id="message" name="message" rows="10"></textarea>
+        </div>
+      </div>
+      <div class="form-row text-center">
+        <div class="form-group col-md-12">
+          <button type="submit" class="btn nextbutton" id="submitBtn">Submit</button> 
+          <button type="reset" class="btn nextbutton" id="resetBtn">Reset</button> 
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <!-- success half donut graph -->
+          <h3>Likely Success Rate</h3>
+          <div id=""></div>
+        </div>
+        <div class="col-md-6">
+          <!-- Success backers bar chart -->
+          <h3>Success Likelihood Per Number Backers</h3>
+          <div id=""></div>
+        </div>
+      </div>
+  </div>
+
+  </form>
+
+  <script src="{{ url_for( 'static', filename='js/complete.js' ) }} "></script>
 </body>
 
 </html>
