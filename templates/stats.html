@@ -41,7 +41,7 @@
     </div>
     <!-- month started dropdown #1 campaign type -->
     <div class="col-md-3">
-      <div class="">
+      <div class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <select id="parentCategorySelectMonthStarted" onchange="optionChangedMonthStartedStackedBar(this.id)"></select>
         <br>
         <table="table table-bordered">
@@ -49,14 +49,24 @@
         </table>
       </div>
     <!-- month started dropdown #2 campaign subtype -->
-      <div class"">
-          <div class="">
+      <div class"col-md-12">
+          <div class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <select id="categorySelectMonthStarted" onchange="optionChangedMonthStartedStackedBar(this.id)"></select>
               <br>
               <table="table table-bordered">
                 <tbody></tbody>
               </table>
             </div>
+      </div>
+      <div class="col-md-12">
+        <form class="labelfont">
+          <div class="radio">
+            <label><input type="radio" name="optradio" value="number">Number of Campaigns</label>
+         </div>
+         <div class="radio">
+            <label><input type="radio" name="optradio" value="percent">Percent of Campaigns</label>
+         </div>
+        </form>
       </div>
     </div>
   </div>
@@ -68,7 +78,7 @@
       </div>
       <!-- lenght campaign dropdown #1 campaign type -->
       <div class="col-md-3">
-        <div class="">
+        <div class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <select id="parentCategorySelectLengthCampaign" onchange="optionChangedLengthCampaignStackedBar(this.id)"></select>
           <br>
           <table="table table-bordered">
@@ -76,14 +86,25 @@
           </table>
         </div>
       <!-- lenght campaign dropdown #2 campaign subtype -->
-        <div class="">
+
+        <div class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <select id="categorySelectLengthCampaign" onchange="optionChangedLengthCampaignStackedBar()"></select>
             <br>
             <table="table table-bordered">
               <tbody></tbody>
             </table>
         </div>
-      </div>
+
+      <div class="col-md-12">
+          <form>
+            <div class="radio">
+              <label><input type="radio" name="optradio" value="number">Number of Campaigns</label>
+           </div>
+           <div class="radio">
+              <label><input type="radio" name="optradio" value="percent">Percent of Campaigns</label>
+           </div>
+          </form>
+        </div>  
     </div>
       <!-- category chart -->
   <div class="row">
