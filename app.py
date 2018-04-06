@@ -19,8 +19,8 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.externals import joblib
 
 #load models
-model_name = 'random_forest'
-model_name_backers = 'random_forest_backers'
+model_name = 'knn'
+model_name_backers = 'knn_backers'
 
 loaded_model = joblib.load(f'models/{model_name}.pkl')
 loaded_model_backers = joblib.load(f'models/{model_name_backers}.pkl')
