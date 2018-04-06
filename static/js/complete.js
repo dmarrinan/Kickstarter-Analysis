@@ -49,6 +49,15 @@ Plotly.d3.json(parentCategoriesUrl, function (error, response) {
         $optionComplete.text = monthList[i];
         $monthSelectListComplete.appendChild($optionComplete);
     }
+
+    countryList = ["Australia","Austria","Belgium","Canada","Denmark","France","Germany","Great Britain","Hong Kong","Ireland","Italy","Japan","Luxembourg","Mexico","Netherlands","New Zealand","Norway","Singapore","Spain","Sweeden","Switzerland","United States",]
+    $countrySelectListComplete = document.getElementById("countrySelectComplete");
+    for (var i = 0; i < countryList.length; i++) {
+        var $optionComplete = document.createElement("option");
+        $optionComplete.value = countryList[i];
+        $optionComplete.text = countryList[i];
+        $countrySelectListComplete.appendChild($optionComplete);
+    }
 });
 
 function optionChangedParentCategoryComplete(selectListId){
@@ -92,15 +101,24 @@ function submitUserInput(){
     var startMonth = document.getElementById("monthSelectComplete").value
     var parentCategory = document.getElementById("parentCategorySelectComplete").value
     var category = document.getElementById("categorySelectComplete").value
+    var country = document.getElementById("countrySelectComplete").value
 
     blurbText = blurbText.replace("/","|")
     titleText = titleText.replace("/","|")
     goalText = goalText.replace("/","|")
 
-    var predictUrl = `/predict/${titleText}/${blurbText}/${goalText}/${campaignLengthText}/${startMonth}/${parentCategory}/${category}/`;
+    var predictUrl = `/predict/${titleText}/${blurbText}/${goalText}/${campaignLengthText}/${startMonth}/${parentCategory}/${category}/${country}/`;
     Plotly.d3.json(predictUrl, function(error,response){
         console.log(response)
+        prediction = capitalizeFirstLetter(response.prediction)
+        predictionText = "Prediction: " + prediction
+        $predictionLabel = document.getElementById("predictionLabel")
+        $predictionLabel.innerText = predictionText
     });
 }
 
 function resetUserInput(){}
+
+function capitalizeFirstLetter(string) {
+    return string[0].toUpperCase() + string.slice(1);
+}
