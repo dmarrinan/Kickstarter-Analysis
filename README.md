@@ -7,7 +7,7 @@ Visit the deployed [Campaign Starter](https://campaign-starter.herokuapp.com/ "C
 Campaign starter uses data from over 180,000 past kickstarter campaigns to display trends in campaign success/failure across differing campaign categories and sub-categories, campaign lengths, and time of year. Additionally, there is a "Test Your Campaign" features that runs user submitted data against a machine learning model to predict success or failure of the campaign.
 
 ## Machine Learning Modelling & Results
-After data was prepared for modelling (as described in the "Dataset & Manipulation" section below), training and testing datasets were run through various machine learning models and scored to gauge effectiveness of the models. Logistic Regression, Random Forest, K Nearest Neighbors, and Neural Network models were used. Results shown below.
+After data was prepared for modelling (as described in the "Dataset & Manipulation" section below), training and testing datasets were run through various machine learning models and scored to gauge effectiveness of the models. Logistic Regression, Random Forest, K Nearest Neighbors, and Neural Network models were used. Models were run both including and excluding the values for "Backers Count", which would not be available to the creator of a campaign before it was launched. Results shown below.
 
 ### Model Results
 
@@ -24,4 +24,4 @@ This project uses a dataset of 180,000+ kickstarter campaigns. The dataset was f
 This data was store in a SQLite database for use by the web application, and then scaled and encoded for use by the machine learning models described above.
 
 ## Data Source
-[Web Robots](https://webrobots.io/kickstarter-datasets/ "Web Robots"
+[Web Robots](https://webrobots.io/kickstarter-datasets/ "Web Robots")
