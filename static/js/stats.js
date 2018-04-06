@@ -77,18 +77,19 @@ function optionChangedMonthStartedStackedBar(selectListId) {
         if (selectListId == $parentCategorySelectListMonthStarted.id) {
             //clear drop down
             removeOptions($categorySelectListMonthStarted)
-        }
 
-        for (var i = 0; i < response.length; i++) {
-            categoryList.push(response[i]);
-        }
-        //console.log(medalList);
-        $categorySelectListMonthStarted = document.getElementById("categorySelectMonthStarted");
-        for (var i = 0; i < categoryList.length; i++) {
-            var $optionMonthStarted = document.createElement("option");
-            $optionMonthStarted.value = categoryList[i];
-            $optionMonthStarted.text = categoryList[i];
-            $categorySelectListMonthStarted.appendChild($optionMonthStarted);
+
+            for (var i = 0; i < response.length; i++) {
+                categoryList.push(response[i]);
+            }
+            //console.log(medalList);
+
+            for (var i = 0; i < categoryList.length; i++) {
+                var $optionMonthStarted = document.createElement("option");
+                $optionMonthStarted.value = categoryList[i];
+                $optionMonthStarted.text = categoryList[i];
+                $categorySelectListMonthStarted.appendChild($optionMonthStarted);
+            }
         }
 
         monthStartedStackedBarUrl = `/month_started_chart/${$parentCategorySelectListMonthStarted.value}/${$categorySelectListMonthStarted.value}/`
@@ -101,26 +102,26 @@ function optionChangedMonthStartedStackedBar(selectListId) {
             var numCampaignsCanceled = response.canceled.num_campaigns;
 
             var campaignTotals = []
-            for(var i=0;i<numCampaignsSuccessful.length;i++){
+            for (var i = 0; i < numCampaignsSuccessful.length; i++) {
                 total = numCampaignsSuccessful[i] + numCampaignsFailed[i] + numCampaignsCanceled[i]
                 campaignTotals.push(total)
             }
 
             var $radioBtnMonthStarted = document.getElementById("monthStartedRadioPercentCampaigns")
-            if ($radioBtnMonthStarted.checked){
+            if ($radioBtnMonthStarted.checked) {
                 ySuccess = []
                 yFailed = []
                 yCanceled = []
-                for (var i=0;i<numCampaignsSuccessful.length;i++){
-                    success = numCampaignsSuccessful[i]/campaignTotals[i]*100;
-                    failed = numCampaignsFailed[i]/campaignTotals[i]*100;
-                    canceled = numCampaignsCanceled[i]/campaignTotals[i]*100;
+                for (var i = 0; i < numCampaignsSuccessful.length; i++) {
+                    success = numCampaignsSuccessful[i] / campaignTotals[i] * 100;
+                    failed = numCampaignsFailed[i] / campaignTotals[i] * 100;
+                    canceled = numCampaignsCanceled[i] / campaignTotals[i] * 100;
                     ySuccess.push(success);
                     yFailed.push(failed);
                     yCanceled.push(canceled);
                 }
             }
-            else{
+            else {
                 ySuccess = numCampaignsSuccessful
                 yFailed = numCampaignsFailed
                 yCanceled = numCampaignsCanceled
@@ -130,7 +131,7 @@ function optionChangedMonthStartedStackedBar(selectListId) {
                 y: ySuccess,
                 name: 'Successful',
                 type: 'bar',
-                marker:{
+                marker: {
                     color: '#28a745'
                 }
             };
@@ -140,7 +141,7 @@ function optionChangedMonthStartedStackedBar(selectListId) {
                 y: yFailed,
                 name: 'Failed',
                 type: 'bar',
-                marker:{
+                marker: {
                     color: '#dc3545'
                 }
             };
@@ -150,7 +151,7 @@ function optionChangedMonthStartedStackedBar(selectListId) {
                 y: yCanceled,
                 name: 'Canceled',
                 type: 'bar',
-                marker:{
+                marker: {
                     color: '#ffc107'
                 }
             };
@@ -175,18 +176,18 @@ function optionChangedLengthCampaignStackedBar(selectListId) {
         if (selectListId == $parentCategorySelectListLengthCampaign.id) {
             //clear drop down
             removeOptions($categorySelectListLengthCampaign)
-        }
 
-        for (var i = 0; i < response.length; i++) {
-            categoryList.push(response[i]);
-        }
-
-        $categorySelectListLengthCampaign = document.getElementById("categorySelectLengthCampaign");
-        for (var i = 0; i < categoryList.length; i++) {
-            var $optionLengthCampaign = document.createElement("option");
-            $optionLengthCampaign.value = categoryList[i];
-            $optionLengthCampaign.text = categoryList[i];
-            $categorySelectListLengthCampaign.appendChild($optionLengthCampaign);
+            for (var i = 0; i < response.length; i++) {
+                categoryList.push(response[i]);
+            }
+    
+            $categorySelectListLengthCampaign = document.getElementById("categorySelectLengthCampaign");
+            for (var i = 0; i < categoryList.length; i++) {
+                var $optionLengthCampaign = document.createElement("option");
+                $optionLengthCampaign.value = categoryList[i];
+                $optionLengthCampaign.text = categoryList[i];
+                $categorySelectListLengthCampaign.appendChild($optionLengthCampaign);
+            }
         }
 
         lengthCampaignStackedBarUrl = `/length_campaign_chart/${$parentCategorySelectListLengthCampaign.value}/${$categorySelectListLengthCampaign.value}/`
@@ -199,26 +200,26 @@ function optionChangedLengthCampaignStackedBar(selectListId) {
             var numCampaignsCanceled = response.canceled.num_campaigns;
 
             var campaignTotals = []
-            for(var i=0;i<numCampaignsSuccessful.length;i++){
+            for (var i = 0; i < numCampaignsSuccessful.length; i++) {
                 total = numCampaignsSuccessful[i] + numCampaignsFailed[i] + numCampaignsCanceled[i]
                 campaignTotals.push(total)
             }
 
             var $radioBtnLengthCampaign = document.getElementById("lengthCampaignRadioPercentCampaigns")
-            if ($radioBtnLengthCampaign.checked){
+            if ($radioBtnLengthCampaign.checked) {
                 ySuccess = []
                 yFailed = []
                 yCanceled = []
-                for (var i=0;i<numCampaignsSuccessful.length;i++){
-                    success = numCampaignsSuccessful[i]/campaignTotals[i]*100;
-                    failed = numCampaignsFailed[i]/campaignTotals[i]*100;
-                    canceled = numCampaignsCanceled[i]/campaignTotals[i]*100;
+                for (var i = 0; i < numCampaignsSuccessful.length; i++) {
+                    success = numCampaignsSuccessful[i] / campaignTotals[i] * 100;
+                    failed = numCampaignsFailed[i] / campaignTotals[i] * 100;
+                    canceled = numCampaignsCanceled[i] / campaignTotals[i] * 100;
                     ySuccess.push(success);
                     yFailed.push(failed);
                     yCanceled.push(canceled);
                 }
             }
-            else{
+            else {
                 ySuccess = numCampaignsSuccessful
                 yFailed = numCampaignsFailed
                 yCanceled = numCampaignsCanceled
@@ -229,7 +230,7 @@ function optionChangedLengthCampaignStackedBar(selectListId) {
                 y: ySuccess,
                 name: 'Successful',
                 type: 'bar',
-                marker:{
+                marker: {
                     color: '#28a745'
                 }
             };
@@ -239,7 +240,7 @@ function optionChangedLengthCampaignStackedBar(selectListId) {
                 y: yFailed,
                 name: 'Failed',
                 type: 'bar',
-                marker:{
+                marker: {
                     color: '#dc3545'
                 }
             };
@@ -249,7 +250,7 @@ function optionChangedLengthCampaignStackedBar(selectListId) {
                 y: yCanceled,
                 name: 'Canceled',
                 type: 'bar',
-                marker:{
+                marker: {
                     color: '#ffc107'
                 }
             };
@@ -270,7 +271,7 @@ function removeOptions(selectbox) {
     }
 }
 
-function optionChangedParentCategoryStackedBar(){
+function optionChangedParentCategoryStackedBar() {
     parentCategoriesStackedBarUrl = `/parent_category_chart/All Months/All Lengths/`
     Plotly.d3.json(parentCategoriesStackedBarUrl, function (error, response) {
         var parentCategoriesSuccessful = response.successful.parent_category;
@@ -280,7 +281,7 @@ function optionChangedParentCategoryStackedBar(){
             y: numCampaignsSuccessful,
             name: 'Successful',
             type: 'bar',
-            marker:{
+            marker: {
                 color: '#28a745'
             }
         };
@@ -292,7 +293,7 @@ function optionChangedParentCategoryStackedBar(){
             y: numCampaignsFailed,
             name: 'Failed',
             type: 'bar',
-            marker:{
+            marker: {
                 color: '#dc3545'
             }
         };
@@ -304,7 +305,7 @@ function optionChangedParentCategoryStackedBar(){
             y: numCampaignsCanceled,
             name: 'Canceled',
             type: 'bar',
-            marker:{
+            marker: {
                 color: '#ffc107'
             }
         };
@@ -314,19 +315,19 @@ function optionChangedParentCategoryStackedBar(){
         var layout = { barmode: 'stack' };
         Plotly.newPlot('parentCategoryStackedBar', data, layout);
         parentCategoryPlot = document.getElementById("parentCategoryStackedBar")
-        parentCategoryPlot.on('plotly_click', function(data){
+        parentCategoryPlot.on('plotly_click', function (data) {
             categoryStackedBar(data.points[0].x);
         });
     });
 
     var data = [];
 
-        var layout = { barmode: 'stack' };
+    var layout = { barmode: 'stack' };
 
-        Plotly.newPlot('categoryStackedBar', data, layout);
+    Plotly.newPlot('categoryStackedBar', data, layout);
 }
 
-function categoryStackedBar(parentCategory){
+function categoryStackedBar(parentCategory) {
     categoriesStackedBarUrl = `/category_chart/All Months/All Lengths/${parentCategory}/`
     Plotly.d3.json(categoriesStackedBarUrl, function (error, response) {
         var categoriesSuccessful = response.successful.category_name;
@@ -336,7 +337,7 @@ function categoryStackedBar(parentCategory){
             y: numCampaignsSuccessful,
             name: 'Successful',
             type: 'bar',
-            marker:{
+            marker: {
                 color: '#28a745'
             }
         };
@@ -348,7 +349,7 @@ function categoryStackedBar(parentCategory){
             y: numCampaignsFailed,
             name: 'Failed',
             type: 'bar',
-            marker:{
+            marker: {
                 color: '#dc3545'
             }
         };
@@ -360,7 +361,7 @@ function categoryStackedBar(parentCategory){
             y: numCampaignsCanceled,
             name: 'Canceled',
             type: 'bar',
-            marker:{
+            marker: {
                 color: '#ffc107'
             }
         };
