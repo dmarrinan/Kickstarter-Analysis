@@ -790,4 +790,4 @@ def complete():
     return render_template("complete.html")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
