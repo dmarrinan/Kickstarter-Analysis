@@ -11,19 +11,32 @@ from flask import(
     jsonify
 )
 
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder, StandardScaler
+from sklearn.externals import joblib
+from keras.utils import to_categorical
+from keras.models import load_model
+from sklearn.externals import joblib
+
+model_file = 'models/nn_model.hdf5'
+model = load_model(model_file)
+
+scaler_file = 'models/X_scalar.save'
+scaler = joblib.load(scaler_file)
+
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 analyzer = SentimentIntensityAnalyzer()
 
-from sklearn import tree
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.externals import joblib
+# from sklearn import tree
+# from sklearn.ensemble import RandomForestClassifier
+# from sklearn.externals import joblib
 
-#load models
-model_name = 'knn'
-model_name_backers = 'knn_backers'
+# #load models
+# model_name = 'knn'
+# model_name_backers = 'knn_backers'
 
-loaded_model = joblib.load(f'models/{model_name}.pkl')
-loaded_model_backers = joblib.load(f'models/{model_name_backers}.pkl')
+# loaded_model = joblib.load(f'models/{model_name}.pkl')
+# loaded_model_backers = joblib.load(f'models/{model_name_backers}.pkl')
 
 
 # Database Setup
@@ -713,10 +726,11 @@ def predict(titleText,blurbText,goalText,campaignLengthText,startMonth,parentCat
     print(category)
     print(country)
 
-    category_name_dic = {'Television': 0, 'Weaving': 1, 'Festivals': 2, 'Music': 3, 'Romance': 4, 'Punk': 5, 'Makerspaces': 6, "Children's Books": 7, 'Family': 8, 'Couture': 9, 'Anthologies': 10, 'Design': 11, 'Workshops': 12, 'People': 13, 'Music Videos': 14, 'Digital Art': 15, 'Country & Folk': 16, 'Printing': 17, 'Action': 18, 'Farms': 19, 'Experimental': 20, 'Performances': 21, 'Photobooks': 22, 'Letterpress': 23, 'Webcomics': 24, 'Electronic Music': 25, 'Thrillers': 26, 'Architecture': 27, 'Rock': 28, 'Immersive': 29, 'Video': 30, 'Hip-Hop': 31, 'Camera Equipment': 32, 'Drama': 33, 'Horror': 34, 'Residencies': 35, 'Fabrication Tools': 36, 'Live Games': 37, 'Stationery': 38, 'Chiptune': 39, 'DIY Electronics': 40, 'Audio': 41, 'Academic': 42, 'Periodicals': 43, 'Poetry': 44, 'Fine Art': 45, 'Installations': 46, 'Mobile Games': 47, 'Kids': 48, 'Illustration': 49, '3D Printing': 50, 'Public Art': 51, 'Mixed Media': 52, 'Video Art': 53, 'Knitting': 54, 'Documentary': 55, 'R&B': 56, 'Dance': 57, 'Embroidery': 58, 'Webseries': 59, 'Hardware': 60, 'Nonfiction': 61, 'Publishing': 62, 'Food Trucks': 63, 'Comedy': 64, 'Software': 65, 'Playing Cards': 66, 'Footwear': 67, 'Plays': 68, 'Animation': 69, 'Calendars': 70, 'Apparel': 71, 'Bacon': 72, "Farmer's Markets": 73, 'Woodworking': 74, 'Places': 75, 'Crafts': 76, 'Literary Journals': 77, 'Product Design': 78, 'Interactive Design': 79, 'Comics': 80, 'Sound': 81, 'Events': 82, 'Fiction': 83, 'Art': 84, 'Pop': 85, 'Radio & Podcasts': 86, 'Technology': 87, 'Photography': 88, 'Literary Spaces': 89, 'Photo': 90, 'Typography': 91, 'Jewelry': 92, 'Apps': 93, 'Small Batch': 94, 'Animals': 95, 'Taxidermy': 96, 'Indie Rock': 97, 'Nature': 98, 'Pottery': 99, 'Science Fiction': 100, 'Textiles': 101, 'Space Exploration': 102, 'Web': 103, 'Pet Fashion': 104, 'Civic Design': 105, 'Performance Art': 106, 'Sculpture': 107, 'Quilts': 108, 'Wearables': 109, 'Faith': 110, 'Puzzles': 111, 'Childrenswear': 112, 'Accessories': 113, 'Gadgets': 114, 'Theater': 115, 'Movie Theaters': 116, 'Comic Books': 117, 'Tabletop Games': 118, 'Musical': 119, 'Drinks': 120, 'Spaces': 121, 'Ready-to-wear': 122, 'Games': 123, 'Gaming Hardware': 124, 'Crochet': 125, 'Robots': 126, 'Glass': 127, 'Blues': 128, 'Candles': 129, 'Classical Music': 130, 'Metal': 131, 'Zines': 132, 'Narrative Film': 133, 'World Music': 134, 'Conceptual Art': 135, 'Jazz': 136, 'Vegan': 137, 'Ceramics': 138, 'Graphic Design': 139, 'Graphic Novels': 140, 'Cookbooks': 141, 'Flight': 142, 'Translations': 143, 'Journalism': 144, 'Shorts': 145, 'Restaurants': 146, 'Print': 147, 'Young Adult': 148, 'DIY': 149, 'Video Games': 150, 'Film & Video': 151, 'Food': 152, 'Art Books': 153, 'Painting': 154, 'Fantasy': 155, 'Latin': 156, 'Community Gardens': 157}
-    parent_category_dic = {'Publishing': 0, 'Music': 1, 'none': 2, 'Crafts': 3, 'Design': 4, 'Dance': 5, 'Technology': 6, 'Games': 7, 'Photography': 8, 'Comics': 9, 'Film & Video': 10, 'Food': 11, 'Journalism': 12, 'Art': 13, 'Theater': 14}
-    month_dic = {'September': 0, 'February': 1, 'June': 2, 'November': 3, 'May': 4, 'July': 5, 'March': 6, 'August': 7, 'April': 8, 'January': 9, 'October': 10, 'December': 11}
+    category_name_dic = {'Flight': 0, 'Letterpress': 1, 'Apps': 2, 'Camera Equipment': 3, 'Nonfiction': 4, 'Electronic Music': 5, 'Weaving': 6, 'Faith': 7, 'Animals': 8, 'Video Art': 9, 'Tabletop Games': 10, 'Ready-to-wear': 11, 'Music Videos': 12, 'Graphic Novels': 13, 'Comedy': 14, 'Hardware': 15, 'Gaming Hardware': 16, 'Robots': 17, 'Food Trucks': 18, 'Photo': 19, 'Couture': 20, 'Civic Design': 21, 'Metal': 22, 'Art Books': 23, 'Taxidermy': 24, 'Film & Video': 25, 'Residencies': 26, 'Calendars': 27, 'Action': 28, 'Drama': 29, 'Sculpture': 30, 'Audio': 31, 'Performances': 32, 'Pet Fashion': 33, 'Fiction': 34, 'Technology': 35, 'Vegan': 36, 'Graphic Design': 37, 'Hip-Hop': 38, 'Drinks': 39, '3D Printing': 40, 'Fabrication Tools': 41, 'Textiles': 42, 'Playing Cards': 43, 'Places': 44, 'Community Gardens': 45, 'Academic': 46, 'Kids': 47, 'Gadgets': 48, 'Theater': 49, 'Television': 50, 'Conceptual Art': 51, 'Crafts': 52, 'Video Games': 53, 'Young Adult': 54, 'Puzzles': 55, 'Woodworking': 56, 'Architecture': 57, 'Restaurants': 58, 'Games': 59, 'Festivals': 60, 'Webcomics': 61, 'Country & Folk': 62, 'Apparel': 63, 'Jewelry': 64, 'Indie Rock': 65, 'Family': 66, 'Plays': 67, 'Printing': 68, 'Food': 69, 'Blues': 70, 'Experimental': 71, 'Literary Spaces': 72, 'Movie Theaters': 73, 'Anthologies': 74, 'Painting': 75, 'Jazz': 76, 'Webseries': 77, 'Art': 78, 'Chiptune': 79, 'Immersive': 80, 'Farms': 81, 'People': 82, 'DIY Electronics': 83, 'Accessories': 84, 'Footwear': 85, 'Fantasy': 86, 'World Music': 87, 'Documentary': 88, 'Zines': 89, 'Embroidery': 90, 'Radio & Podcasts': 91, 'Classical Music': 92, 'Thrillers': 93, 'Product Design': 94, 'Translations': 95, 'Digital Art': 96, 'Cookbooks': 97, 'Comic Books': 98, 'Photography': 99, 'Shorts': 100, 'Comics': 101, 'Poetry': 102, 'Periodicals': 103, 'Pottery': 104, 'Installations': 105, 'Narrative Film': 106, 'Events': 107, 'Ceramics': 108, 'Publishing': 109, 'Candles': 110, 'Photobooks': 111, 'Interactive Design': 112, 'Dance': 113, 'Web': 114, 'Typography': 115, 'DIY': 116, 'Knitting': 117, 'Wearables': 118, 'Mixed Media': 119, 'Childrenswear': 120, 'Stationery': 121, 'Video': 122, 'Spaces': 123, 'Nature': 124, 'Bacon': 125, 'Print': 126, 'Mobile Games': 127, 'Rock': 128, 'Design': 129, 'Live Games': 130, 'Sound': 131, 'Punk': 132, 'Illustration': 133, 'Fine Art': 134, "Farmer's Markets": 135, 'Journalism': 136, "Children's Books": 137, 'Software': 138, 'Quilts': 139, 'Music': 140, 'Animation': 141, 'Horror': 142, 'R&B': 143, 'Pop': 144, 'Crochet': 145, 'Musical': 146, 'Public Art': 147, 'Workshops': 148, 'Space Exploration': 149, 'Romance': 150, 'Glass': 151, 'Science Fiction': 152, 'Makerspaces': 153, 'Performance Art': 154, 'Small Batch': 155, 'Latin': 156, 'Literary Journals': 157}
+    parent_category_dic = {'none': 0, 'Food': 1, 'Technology': 2, 'Crafts': 3, 'Film & Video': 4, 'Games': 5, 'Publishing': 6, 'Journalism': 7, 'Dance': 8, 'Photography': 9, 'Art': 10, 'Comics': 11, 'Design': 12, 'Music': 13, 'Theater': 14}
+    month_dic = {'February': 0, 'October': 1, 'March': 2, 'July': 3, 'June': 4, 'September': 5, 'August': 6, 'November': 7, 'January': 8, 'April': 9, 'May': 10, 'December': 11}
     country_dic = {'Norway': 0, 'Austria': 1, 'Canada': 2, 'Spain': 3, 'Switzerland': 4, 'Luxembourg': 5, 'Germany': 6, 'Australia': 7, 'Belgium': 8, 'Denmark': 9, 'Singapore': 10, 'Japan': 11, 'United States': 12, 'Great Britain': 13, 'New Zealand': 14, 'Mexico': 15, 'France': 16, 'Italy': 17, 'Netherlands': 18, 'Ireland': 19, 'Sweeden': 20, 'Hong Kong': 21}
+    country_dic = {'Sweeden': 0, 'Italy': 1, 'Denmark': 2, 'Germany': 3, 'Ireland': 4, 'Hong Kong': 5, 'New Zealand': 6, 'Great Britain': 7, 'France': 8, 'Japan': 9, 'Luxembourg': 10, 'Canada': 11, 'Canada': 12, 'Austria': 13, 'Norway': 14, 'Australia': 15, 'Netherlands': 16, 'Mexico': 17, 'Switzerland': 18, 'Belgium': 19, 'Spain': 20, 'United States': 21}
 
     category_name = category_name_dic[category]
     parent_category = parent_category_dic[parentCategory]
@@ -752,20 +766,23 @@ def predict(titleText,blurbText,goalText,campaignLengthText,startMonth,parentCat
 
     #what datatype does X need to be?
     X = [[campaign_length,blurb_length,blurb_compound,blurb_positive,blurb_negative,blurb_neutral, title_length, title_compound, title_positive,title_negative,title_neutral,goal,country,currency,category_name,parent_category,month]]
+    
+    X_scaled = scaler.transform(X)
+    prediction = model.predict(X_scaled).tolist()
 
-    #models are loaded at very beginning of app
-    prediction = loaded_model.predict(X)
-    prediction_list = prediction.tolist()
+    # #models are loaded at very beginning of app
+    # prediction = loaded_model.predict(X)
+    # prediction_list = prediction.tolist()
 
-    #what values do we want to test our model with?
-    backers_list = []
+    # #what values do we want to test our model with?
+    # backers_list = []
 
-    backers_predictions = []
-    for backer in backers_list:
-        backers_predictions.append(loaded_model_backers.predict([X,backer]))
+    # backers_predictions = []
+    # for backer in backers_list:
+    #     backers_predictions.append(loaded_model_backers.predict([X,backer]))
 
     #need to figure out how to deal with output so that we can jsonify it!
-    response_object = {'prediction': prediction_list, 'backers_list': backers_list, 'backers_predictions': backers_predictions}
+    response_object = {'prediction': prediction}
     return jsonify(response_object)
 
 # create route that renders index.html template

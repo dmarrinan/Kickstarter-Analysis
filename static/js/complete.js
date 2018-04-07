@@ -40,7 +40,7 @@ Plotly.d3.json(parentCategoriesUrl, function (error, response) {
         }
     });
 
-    monthList = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    monthList = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     $monthSelectListComplete = document.getElementById("monthSelectComplete");
     for (var i = 0; i < monthList.length; i++) {
@@ -50,7 +50,7 @@ Plotly.d3.json(parentCategoriesUrl, function (error, response) {
         $monthSelectListComplete.appendChild($optionComplete);
     }
 
-    countryList = ["Australia","Austria","Belgium","Canada","Denmark","France","Germany","Great Britain","Hong Kong","Ireland","Italy","Japan","Luxembourg","Mexico","Netherlands","New Zealand","Norway","Singapore","Spain","Sweeden","Switzerland","United States",]
+    countryList = ["Australia", "Austria", "Belgium", "Canada", "Denmark", "France", "Germany", "Great Britain", "Hong Kong", "Ireland", "Italy", "Japan", "Luxembourg", "Mexico", "Netherlands", "New Zealand", "Norway", "Singapore", "Spain", "Sweeden", "Switzerland", "United States",]
     $countrySelectListComplete = document.getElementById("countrySelectComplete");
     for (var i = 0; i < countryList.length; i++) {
         var $optionComplete = document.createElement("option");
@@ -60,11 +60,11 @@ Plotly.d3.json(parentCategoriesUrl, function (error, response) {
     }
 });
 
-function optionChangedParentCategoryComplete(selectListId){
+function optionChangedParentCategoryComplete(selectListId) {
     $parentCategorySelectComplete = document.getElementById("parentCategorySelectComplete")
     parentCategoryComplete = $parentCategorySelectComplete.value
     categoriesCompleteUrl = `/fetch_categories_length_campaign/${parentCategoryComplete}`;
-    
+
     Plotly.d3.json(categoriesCompleteUrl, function (error, response) {
         if (error) console.log(error);
         categoryList = [];
@@ -91,7 +91,7 @@ function removeOptions(selectbox) {
     }
 }
 
-function submitUserInput(){
+function submitUserInput() {
     event.preventDefault();
 
     var titleText = document.getElementById("subject").value
@@ -103,22 +103,50 @@ function submitUserInput(){
     var category = document.getElementById("categorySelectComplete").value
     var country = document.getElementById("countrySelectComplete").value
 
-    blurbText = blurbText.replace("/","|")
-    titleText = titleText.replace("/","|")
-    goalText = goalText.replace("/","|")
+    blurbText = blurbText.replace("/", "|")
+    titleText = titleText.replace("/", "|")
+    goalText = goalText.replace("/", "|")
+
+    if (titleText == ""){
+        titleText = 'a'
+    }
+    if (blurbText == ""){
+        blurbText = 'a'
+    }
+    if (goalText == ""){
+        goalText = '0'
+    }
+    if (titleText == ""){
+        campaignLengthText = '0'
+    }
 
     var predictUrl = `/predict/${titleText}/${blurbText}/${goalText}/${campaignLengthText}/${startMonth}/${parentCategory}/${category}/${country}/`;
-    Plotly.d3.json(predictUrl, function(error,response){
-        console.log(response)
-        prediction = capitalizeFirstLetter(response.prediction)
-        predictionText = "Prediction: " + prediction
-        $predictionLabel = document.getElementById("predictionLabel")
-        $predictionLabel.innerText = predictionText
+    Plotly.d3.json(predictUrl, function (error, response) {
+        if (error) {
+            console.log(error);
+            predictionText = "Prediction: Unable to Predict";
+            $predictionLabel = document.getElementById("predictionLabel");
+            $predictionLabel.innerText = predictionText
+        }
+        else {
+            console.log(response)
+            predictionValue = parseFloat(response.prediction[0][1])*100;
+            if (predictionValue > 50) {
+                predictionText = 'Success'
+            }
+            else{
+                predictionText = 'Failure'
+            }
+            console.log(predictionValue)
+            predictionText = "Prediction: " + predictionText;
+            $predictionLabel = document.getElementById("predictionLabel")
+            $predictionLabel.innerText = predictionText
+        }
     });
 }
 
-function resetUserInput(){}
+function resetUserInput() { }
 
 function capitalizeFirstLetter(string) {
-    return string[0].toUpperCase() + string.slice(1);
+    return string.slice(0,0).toUpperCase() + string.slice(1);
 }
